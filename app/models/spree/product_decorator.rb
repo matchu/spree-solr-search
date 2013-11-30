@@ -14,7 +14,7 @@ Spree::Product.class_eval do
   # saves product to the Solr index
   def solr_save
     return true if indexing_disabled?
-    if ActsAsSolr::InstanceMethods::Helpers.evaluate_condition(:if, self)
+    if ActsAsSolr::InstanceMethods::Helpers.evaluate_condition(configuration[:if], self)
       if defined? Delayed::Job 
         Delayed::Job.enqueue SolrManager.new("solr_save", self, Spree::SolrSearch::Config[:auto_commit])
       else  
